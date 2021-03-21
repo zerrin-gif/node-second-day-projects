@@ -1,34 +1,18 @@
-const http = require('http');
-let request = require('request');
-require('dotenv').config()
-const apiKey = process.env.apiKey;
+const express = require ('express')
 
-// let apiKey='2082573baa2c88e4ee84edd0044c8192';
-
-const myserver = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/html" });
-  res.write(
-    "<form method='post'> <input name='city'> <button>Submit</button> </form>"
-  );
-  let body = "";
-  req.on("data", function (chunk) {
-    //takes input value from DOM
-    body += chunk;
-    console.log(body);
-    const city = body
-    const url = "http://api.weatherstack.com/current?access_key=" + apiKey + "&query=" + city;
-    request(url, function (err, response, body) {
-      if (err) {
-        console.log("error:", error);
-      } else {
-        const info = JSON.parse(body);
-        console.log("body:", info.location.name);
-        res.end(
-          `Today ${info.current.temperature} degrees in ${info.location.name} `
-        );
-      }
-    });
-  });
+const app = express()
+const port = 3001;
+app.get('/', (req, res) => {
+  res.send('Hello World, from express');
 });
-myserver.listen(3000)
 
+
+app.get("/about", (req, res) => { res.json("I am a code learner");});
+app.get("/hobbies", (req, res) => { 
+  res.json("My hobbies are cooking, cleaning, coding");
+});
+
+app.get("/friends", (req, res) => { res.json(["Lachin","Mahri","Maysa","Gulsenem","Done"]);});
+
+
+app.listen(port, () => console.log(`Hello world app listening on port ${port}!`))
